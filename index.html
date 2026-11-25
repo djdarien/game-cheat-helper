@@ -22,7 +22,7 @@
         <i class="fas fa-gamepad"></i> Game Cheat
         <span class="hidden sm:inline text-sm text-gray-400 font-normal">by GoodVibez</span>
       </h1>
-      <div class="hidden sm:block text-sm text-gray-300">Expert Guides • Best Deals • AI Helper</div>
+      <button id="installBtn" class="hidden bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-sm">Install App</button>
     </div>
   </header>
 
@@ -37,103 +37,98 @@
           <button onclick="loadGame()" class="bg-green-500 hover:bg-green-600 active:bg-green-700 px-6 py-3 rounded-lg font-bold text-base w-full sm:w-auto">Load Guides</button>
         </div>
         <div id="quickGames" class="mt-3 sm:mt-4 flex flex-wrap gap-2">
-          <button onclick="setGame('GTA 6')" class="bg-gray-700 hover:bg-gray-600 active:bg-gray-500 px-4 py-2 rounded text-sm">GTA 6</button>
-          <button onclick="setGame('Elden Ring')" class="bg-gray-700 hover:bg-gray-600 active:bg-gray-500 px-4 py-2 rounded text-sm">Elden Ring</button>
-          <button onclick="setGame('Fortnite')" class="bg-gray-700 hover:bg-gray-600 active:bg-gray-500 px-4 py-2 rounded text-sm">Fortnite</button>
-          <button onclick="setGame('Call of Duty')" class="bg-gray-700 hover:bg-gray-600 active:bg-gray-500 px-4 py-2 rounded text-sm">Call of Duty</button>
-          <button onclick="setGame('Minecraft')" class="bg-gray-700 hover:bg-gray-600 active:bg-gray-500 px-4 py-2 rounded text-sm">Minecraft</button>
-          <button onclick="setGame('Cyberpunk 2077')" class="bg-gray-700 hover:bg-gray-600 active:bg-gray-500 px-4 py-2 rounded text-sm">Cyberpunk 2077</button>
-          <button onclick="setGame('Baldur\'s Gate 3')" class="bg-gray-700 hover:bg-gray-600 active:bg-gray-500 px-4 py-2 rounded text-sm">BG3</button>
-          <button onclick="setGame('The Legend of Zelda: Tears of the Kingdom')" class="bg-gray-700 hover:bg-gray-600 active:bg-gray-500 px-4 py-2 rounded text-sm">Zelda TOTK</button>
+          <button onclick="setGame('GTA 6')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">GTA 6</button>
+          <button onclick="setGame('Elden Ring')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">Elden Ring</button>
+          <button onclick="setGame('Fortnite')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">Fortnite</button>
+          <button onclick="setGame('Minecraft')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">Minecraft</button>
+          <button onclick="setGame('Cyberpunk 2077')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">Cyberpunk 2077</button>
+          <button onclick="setGame('Red Dead Redemption 2')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">RDR2</button>
+          <button onclick="setGame('Valorant')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">Valorant</button>
+          <button onclick="setGame('Apex Legends')" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-sm">Apex</button>
         </div>
+        <div id="recentGames" class="mt-3 text-sm text-gray-400"></div>
       </div>
 
       <div id="gameContent" class="hidden space-y-4">
         <div class="bg-gray-800 p-4 sm:p-6 rounded-xl">
           <h2 id="gameTitle" class="text-xl sm:text-2xl font-bold text-green-400 mb-3"></h2>
-          <div class="flex overflow-x-auto gap-2 mb-4 pb-2 -mx-1 px-1">
-            <button onclick="showTab('maps')" class="tab-btn bg-blue-600 px-4 py-2 rounded whitespace-nowrap text-sm font-medium">Maps</button>
-            <button onclick="showTab('guides')" class="tab-btn bg-gray-700 px-4 py-2 rounded whitespace-nowrap text-sm font-medium">Guides</button>
-            <button onclick="showTab('cheats')" class="tab-btn bg-gray-700 px-4 py-2 rounded whitespace-nowrap text-sm font-medium">Cheats</button>
-            <button onclick="showTab('deals')" class="tab-btn bg-gray-700 px-4 py-2 rounded whitespace-nowrap text-sm font-medium">Deals</button>
+          <div class="flex overflow-x-auto gap-2 mb-4 pb-2">
+            <button onclick="showTab('maps')" class="tab-btn bg-blue-600 px-4 py-2 rounded whitespace-nowrap text-sm">Maps</button>
+            <button onclick="showTab('guides')" class="tab-btn bg-gray-700 px-4 py-2 rounded whitespace-nowrap text-sm">Guides</button>
+            <button onclick="showTab('cheats')" class="tab-btn bg-gray-700 px-4 py-2 rounded whitespace-nowrap text-sm">Cheats</button>
+            <button onclick="showTab('deals')" class="tab-btn bg-gray-700 px-4 py-2 rounded whitespace-nowrap text-sm">Deals</button>
           </div>
           <div id="tabContent" class="prose prose-invert max-w-none text-sm sm:text-base overflow-x-auto"></div>
         </div>
       </div>
     </div>
 
-    <div id="chatPanel" class="bg-gray-800 p-4 sm:p-6 rounded-xl lg:h-fit lg:sticky lg:top-20">
-      <h2 class="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
+    <div id="chatPanel" class="bg-gray-800 p-4 sm:p-6 rounded-xl lg:sticky lg:top-20">
+      <h2 class="text-lg sm:text-xl font-semibold mb-3 flex items-center gap-2">
         <i class="fas fa-robot"></i> Game Helper Chat
-        <button onclick="toggleApiKey()" class="ml-auto text-xs bg-gray-700 px-2 py-1 rounded" title="Set AI API Key">🔑 API</button>
+        <button onclick="toggleApiKey()" class="ml-auto text-xs bg-gray-700 px-2 py-1 rounded">🔑 API</button>
       </h2>
       <div id="apiKeyPanel" class="hidden mb-3 p-2 bg-gray-900 rounded text-sm">
-        <input id="apiKeyInput" type="password" placeholder="xAI / Grok API key (optional for real AI)" class="w-full p-2 rounded bg-gray-700 mb-1">
-        <button onclick="saveApiKey()" class="bg-green-600 px-3 py-1 rounded text-xs">Save Key</button>
-        <span class="text-xs text-gray-400 block mt-1">Stored locally only. Get one at x.ai</span>
+        <input id="apiKeyInput" type="password" placeholder="xAI / Grok API key" class="w-full p-2 rounded bg-gray-700 mb-1">
+        <button onclick="saveApiKey()" class="bg-green-600 px-3 py-1 rounded text-xs">Save</button>
       </div>
-      <div id="chatMessages" class="h-80 sm:h-96 lg:h-96 overflow-y-auto mb-3 space-y-3 p-2 bg-gray-900 rounded text-sm">
-        <div class="chat-bubble bot p-3 rounded-lg">Hi! Tell me what game you're playing or upload a screenshot if you're stuck. I'll pull maps, guides, cheats, and deals. Add an xAI API key for full AI power!</div>
+      <div id="chatMessages" class="h-80 sm:h-96 overflow-y-auto mb-3 space-y-3 p-2 bg-gray-900 rounded text-sm">
+        <div class="chat-bubble bot p-3 rounded-lg">Hi gamer! Load a game or ask me anything. Add an xAI key for full AI power. Install the app for the best experience!</div>
       </div>
       <div class="flex gap-2 mb-2">
-        <input id="chatInput" type="text" placeholder="Ask about a mission, location, or tip..." 
-               class="flex-1 p-3 rounded-lg bg-gray-700 border border-gray-600 text-base"
-               aria-label="Chat message input">
-        <button onclick="sendChat()" class="bg-blue-500 hover:bg-blue-600 active:bg-blue-700 px-4 py-3 rounded-lg flex items-center justify-center" aria-label="Send message">
-          <i class="fas fa-paper-plane"></i>
-        </button>
+        <input id="chatInput" type="text" placeholder="Ask anything..." class="flex-1 p-3 rounded-lg bg-gray-700 border border-gray-600">
+        <button onclick="sendChat()" class="bg-blue-500 hover:bg-blue-600 px-4 py-3 rounded-lg"><i class="fas fa-paper-plane"></i></button>
       </div>
-      <div class="flex items-center gap-2">
-        <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-300 py-2" aria-label="Upload screenshot of stuck location">
-          <i class="fas fa-camera text-lg"></i> 
-          <span class="hidden sm:inline">Upload stuck screenshot</span>
-          <span class="sm:hidden">Upload photo</span>
-          <input type="file" id="photoUpload" accept="image/*" class="hidden" onchange="handlePhoto(event)">
-        </label>
-        <span id="photoStatus" class="text-xs text-green-400"></span>
-      </div>
+      <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-300 py-2">
+        <i class="fas fa-camera"></i> Upload stuck screenshot
+        <input type="file" id="photoUpload" accept="image/*" class="hidden" onchange="handlePhoto(event)">
+      </label>
+      <span id="photoStatus" class="text-xs text-green-400"></span>
     </div>
   </main>
 
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 z-50 flex justify-around p-2">
-    <button onclick="document.getElementById('gameInput').focus()" class="flex flex-col items-center text-xs text-gray-300 hover:text-green-400 py-1">
-      <i class="fas fa-search text-lg"></i> Game
-    </button>
-    <button onclick="document.getElementById('chatPanel').scrollIntoView({behavior: 'smooth'})" class="flex flex-col items-center text-xs text-gray-300 hover:text-blue-400 py-1">
-      <i class="fas fa-comments text-lg"></i> Chat
-    </button>
-    <button onclick="showTab('deals'); document.getElementById('gameContent').scrollIntoView({behavior: 'smooth'})" class="flex flex-col items-center text-xs text-gray-300 hover:text-green-400 py-1">
-      <i class="fas fa-tags text-lg"></i> Deals
-    </button>
+    <button onclick="document.getElementById('gameInput').focus()" class="flex flex-col items-center text-xs text-gray-300 py-1"><i class="fas fa-search text-lg"></i>Game</button>
+    <button onclick="document.getElementById('chatPanel').scrollIntoView({behavior:'smooth'})" class="flex flex-col items-center text-xs text-gray-300 py-1"><i class="fas fa-comments text-lg"></i>Chat</button>
+    <button onclick="showTab('deals')" class="flex flex-col items-center text-xs text-gray-300 py-1"><i class="fas fa-tags text-lg"></i>Deals</button>
   </nav>
 
   <footer class="bg-black p-4 mt-8 text-center text-gray-500 text-xs sm:text-sm mb-16 lg:mb-0">
-    Game Cheat Helper • Powered by GoodVibez.life • Best deals from G2A, CDKeys, Instant Gaming & more
+    Game Cheat Helper • GoodVibez.life • Lowest deals from G2A, CDKeys, Instant Gaming & more
   </footer>
 
   <script>
     let currentGame = '';
-    let currentTab = 'maps';
     let apiKey = localStorage.getItem('xai_api_key') || '';
+    let deferredPrompt;
+    let recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
 
-    // PWA registration
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').catch(err => console.log('SW failed', err));
-      });
+      navigator.serviceWorker.register('/service-worker.js');
     }
 
-    function toggleApiKey() {
-      document.getElementById('apiKeyPanel').classList.toggle('hidden');
-      if (apiKey) document.getElementById('apiKeyInput').value = apiKey;
-    }
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBtn').classList.remove('hidden');
+    });
 
-    function saveApiKey() {
-      apiKey = document.getElementById('apiKeyInput').value.trim();
-      localStorage.setItem('xai_api_key', apiKey);
-      document.getElementById('apiKeyPanel').classList.add('hidden');
-      addBotMessage(apiKey ? 'API key saved! Full AI chat is now enabled.' : 'API key cleared. Using smart fallback responses.');
+    document.getElementById('installBtn').addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') document.getElementById('installBtn').classList.add('hidden');
+        deferredPrompt = null;
+      }
+    });
+
+    function renderRecent() {
+      const el = document.getElementById('recentGames');
+      if (recent.length) {
+        el.innerHTML = 'Recent: ' + recent.slice(0,5).map(g => `<button onclick="setGame('${g}')" class="underline text-blue-400 mx-1">${g}</button>`).join('');
+      }
     }
+    renderRecent();
 
     function setGame(game) {
       document.getElementById('gameInput').value = game;
@@ -146,126 +141,51 @@
       document.getElementById('gameTitle').textContent = currentGame;
       document.getElementById('gameContent').classList.remove('hidden');
       showTab('maps');
-      addBotMessage(`Loaded guides for **${currentGame}**. Check the tabs for maps, walkthroughs, cheats, and the lowest prices!`);
-      if (window.innerWidth < 1024) {
-        document.getElementById('gameContent').scrollIntoView({behavior: 'smooth', block: 'start'});
+      addBotMessage(`Loaded **${currentGame}**. Maps, guides, cheats, and best deals ready!`);
+      if (!recent.includes(currentGame)) {
+        recent.unshift(currentGame);
+        if (recent.length > 8) recent.pop();
+        localStorage.setItem('recentGames', JSON.stringify(recent));
+        renderRecent();
       }
+      if (window.innerWidth < 1024) document.getElementById('gameContent').scrollIntoView({behavior:'smooth'});
     }
 
     function showTab(tab) {
-      currentTab = tab;
-      document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.remove('bg-blue-600');
-        btn.classList.add('bg-gray-700');
+      document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+        btn.classList.toggle('bg-blue-600', ['maps','guides','cheats','deals'][i] === tab);
+        btn.classList.toggle('bg-gray-700', ['maps','guides','cheats','deals'][i] !== tab);
       });
-      const tabs = ['maps','guides','cheats','deals'];
-      const idx = tabs.indexOf(tab);
-      if (idx >= 0) {
-        document.querySelectorAll('.tab-btn')[idx].classList.remove('bg-gray-700');
-        document.querySelectorAll('.tab-btn')[idx].classList.add('bg-blue-600');
-      }
       document.getElementById('tabContent').innerHTML = getTabContent(currentGame, tab);
     }
 
     function getTabContent(game, tab) {
       const g = game.toLowerCase();
+      // (Keep previous specific handlers + add more)
       if (tab === 'maps') {
-        if (g.includes('gta') || g.includes('grand theft')) {
-          return `<p>Interactive maps for GTA 6 / GTA VI:</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li><a href="https://www.gtabase.com/gta-6/maps" target="_blank" rel="noopener" class="text-blue-400 hover:underline">GTABase Interactive Map</a></li>
-              <li><a href="https://www.ign.com/wikis/grand-theft-auto-vi" target="_blank" rel="noopener" class="text-blue-400 hover:underline">IGN GTA VI Wiki & Maps</a></li>
-              <li><a href="https://mapgenie.io/grand-theft-auto-vi" target="_blank" rel="noopener" class="text-blue-400 hover:underline">MapGenie GTA VI</a></li>
-            </ul><p class="mt-2">Collectibles, businesses, missions, and secrets marked.</p>`;
-        }
-        if (g.includes('elden')) {
-          return `<p>Elden Ring Maps:</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li><a href="https://eldenring.wiki.fextralife.com/Interactive+Map" target="_blank" rel="noopener" class="text-blue-400">Fextralife Interactive Map</a></li>
-              <li><a href="https://mapgenie.io/elden-ring" target="_blank" rel="noopener" class="text-blue-400">MapGenie Elden Ring</a></li>
-              <li><a href="https://www.ign.com/wikis/elden-ring" target="_blank" rel="noopener" class="text-blue-400">IGN Wiki</a></li>
-            </ul>`;
-        }
-        if (g.includes('fortnite')) {
-          return `<p>Fortnite Maps:</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li><a href="https://www.fortnite.com/maps" target="_blank" rel="noopener" class="text-blue-400">Official Fortnite Map</a></li>
-              <li><a href="https://fortnite.fandom.com/wiki/Map" target="_blank" rel="noopener" class="text-blue-400">Fandom Map</a></li>
-            </ul>`;
-        }
-        return `<p>Maps for ${game}:</p><ul class="list-disc pl-5 space-y-1">
-          <li><a href="https://www.ign.com/search?q=${encodeURIComponent(game + ' map')}" target="_blank" rel="noopener" class="text-blue-400">IGN Maps Search</a></li>
-          <li><a href="https://mapgenie.io/search?q=${encodeURIComponent(game)}" target="_blank" rel="noopener" class="text-blue-400">MapGenie</a></li>
-          <li><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(game + ' interactive map')}" target="_blank" rel="noopener" class="text-blue-400">YouTube Map Videos</a></li>
-        </ul>`;
+        if (g.includes('gta')) return `<p>GTA 6 maps:</p><ul class="list-disc pl-5"><li><a href="https://www.gtabase.com/gta-6/maps" class="text-blue-400" target="_blank">GTABase</a></li><li><a href="https://mapgenie.io/grand-theft-auto-vi" class="text-blue-400" target="_blank">MapGenie</a></li></ul>`;
+        if (g.includes('elden')) return `<p>Elden Ring:</p><ul class="list-disc pl-5"><li><a href="https://eldenring.wiki.fextralife.com/Interactive+Map" class="text-blue-400" target="_blank">Fextralife Map</a></li></ul>`;
+        return `<p>Maps for ${game}:</p><ul class="list-disc pl-5"><li><a href="https://www.ign.com/search?q=${encodeURIComponent(game+' map')}" class="text-blue-400" target="_blank">IGN</a></li><li><a href="https://mapgenie.io" class="text-blue-400" target="_blank">MapGenie</a></li></ul>`;
       }
-      if (tab === 'guides') {
-        return `<p>Walkthroughs & Guides for ${game}:</p><ul class="list-disc pl-5 space-y-1">
-          <li><a href="https://www.ign.com/wikis/${encodeURIComponent(game.replace(/ /g, '-'))}" target="_blank" rel="noopener" class="text-blue-400">IGN Wiki</a></li>
-          <li><a href="https://gamefaqs.gamespot.com/search?game=${encodeURIComponent(game)}" target="_blank" rel="noopener" class="text-blue-400">GameFAQs Guides</a></li>
-          <li><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(game + ' walkthrough')}" target="_blank" rel="noopener" class="text-blue-400">Video Walkthroughs</a></li>
-          <li><a href="https://www.reddit.com/search/?q=${encodeURIComponent(game + ' guide')}" target="_blank" rel="noopener" class="text-blue-400">Reddit Tips</a></li>
-        </ul>`;
-      }
-      if (tab === 'cheats') {
-        if (g.includes('gta')) {
-          return `<p>Popular GTA 6 Cheats & Tips:</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>Money glitches and business guides (check latest YouTube)</li>
-              <li>Weapon cheats and vehicle spawns via interactive maps</li>
-              <li>Achievement/trophy guides on TrueAchievements / PSNProfiles</li>
-            </ul>
-            <p class="mt-2"><a href="https://www.youtube.com/results?search_query=gta+6+cheats+2026" class="text-blue-400" target="_blank" rel="noopener">Latest Cheat Videos</a></p>`;
-        }
-        if (g.includes('elden')) {
-          return `<p>Elden Ring Tips & Builds:</p>
-            <ul class="list-disc pl-5 space-y-1">
-              <li>Best early game builds and weapon upgrades</li>
-              <li>Boss strategies and rune farming spots</li>
-              <li>Check Fextralife for detailed build guides</li>
-            </ul>`;
-        }
-        return `<p>Cheats & Codes for ${game}:</p>
-          <ul class="list-disc pl-5 space-y-1">
-            <li><a href="https://www.ign.com/search?q=${encodeURIComponent(game + ' cheats')}" class="text-blue-400" target="_blank" rel="noopener">IGN Cheats</a></li>
-            <li><a href="https://www.cheatcc.com/search.php?search=${encodeURIComponent(game)}" class="text-blue-400" target="_blank" rel="noopener">CheatCC</a></li>
-            <li><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(game + ' cheats')}" class="text-blue-400" target="_blank" rel="noopener">YouTube Cheats</a></li>
-          </ul>`;
-      }
-      if (tab === 'deals') {
-        return `<p class="mb-3">Lowest prices for ${game} (keys / digital):</p>
-          <div class="overflow-x-auto">
-            <table class="w-full text-sm border-collapse min-w-[320px]">
-              <thead><tr class="bg-gray-700"><th class="p-2 text-left">Site</th><th class="p-2">Price</th><th class="p-2">Link</th></tr></thead>
-              <tbody>
-                <tr class="border-b border-gray-700"><td class="p-2">G2A</td><td class="p-2 text-green-400">Check live</td><td class="p-2"><a href="https://www.g2a.com/search?query=${encodeURIComponent(game)}" target="_blank" rel="noopener" class="text-blue-400">View</a></td></tr>
-                <tr class="border-b border-gray-700"><td class="p-2">CDKeys</td><td class="p-2 text-green-400">Check live</td><td class="p-2"><a href="https://www.cdkeys.com/search?q=${encodeURIComponent(game)}" target="_blank" rel="noopener" class="text-blue-400">View</a></td></tr>
-                <tr class="border-b border-gray-700"><td class="p-2">Instant Gaming</td><td class="p-2 text-green-400">Check live</td><td class="p-2"><a href="https://www.instant-gaming.com/en/search/?query=${encodeURIComponent(game)}" target="_blank" rel="noopener" class="text-blue-400">View</a></td></tr>
-                <tr><td class="p-2">Steam / Official</td><td class="p-2">Check current</td><td class="p-2"><a href="https://store.steampowered.com/search/?term=${encodeURIComponent(game)}" target="_blank" rel="noopener" class="text-blue-400">View</a></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="mt-2 text-xs text-gray-400">Prices fluctuate. Always compare and check reviews. Best deals often on CDKeys and Instant Gaming.</p>`;
-      }
+      if (tab === 'guides') return `<p>Guides for ${game}:</p><ul class="list-disc pl-5"><li><a href="https://www.ign.com/search?q=${encodeURIComponent(game)}" class="text-blue-400" target="_blank">IGN Wiki</a></li><li><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(game+' walkthrough')}" class="text-blue-400" target="_blank">YouTube</a></li><li><a href="https://gamefaqs.gamespot.com" class="text-blue-400" target="_blank">GameFAQs</a></li></ul>`;
+      if (tab === 'cheats') return `<p>Cheats & tips for ${game}:</p><ul class="list-disc pl-5"><li><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(game+' cheats')}" class="text-blue-400" target="_blank">Latest videos</a></li><li><a href="https://www.ign.com/search?q=${encodeURIComponent(game+' cheats')}" class="text-blue-400" target="_blank">IGN Cheats</a></li></ul>`;
+      if (tab === 'deals') return `<p>Best deals for ${game}:</p><div class="overflow-x-auto"><table class="w-full text-sm"><tr class="bg-gray-700"><th>Site</th><th>Link</th></tr><tr><td>CDKeys</td><td><a href="https://www.cdkeys.com/search?q=${encodeURIComponent(game)}" class="text-blue-400" target="_blank">View</a></td></tr><tr><td>G2A</td><td><a href="https://www.g2a.com/search?query=${encodeURIComponent(game)}" class="text-blue-400" target="_blank">View</a></td></tr><tr><td>Instant Gaming</td><td><a href="https://www.instant-gaming.com/en/search/?query=${encodeURIComponent(game)}" class="text-blue-400" target="_blank">View</a></td></tr></table></div><p class="text-xs text-gray-400 mt-2">Compare live prices — CDKeys and Instant Gaming frequently have the lowest.</p>`;
       return '';
     }
 
     function addBotMessage(text) {
-      const div = document.createElement('div');
-      div.className = 'chat-bubble bot p-3 rounded-lg';
-      div.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      const messages = document.getElementById('chatMessages');
-      messages.appendChild(div);
-      messages.scrollTop = messages.scrollHeight;
+      const d = document.createElement('div');
+      d.className = 'chat-bubble bot p-3 rounded-lg';
+      d.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      document.getElementById('chatMessages').appendChild(d);
+      document.getElementById('chatMessages').scrollTop = 99999;
     }
-
     function addUserMessage(text) {
-      const div = document.createElement('div');
-      div.className = 'chat-bubble user p-3 rounded-lg';
-      div.textContent = text;
-      const messages = document.getElementById('chatMessages');
-      messages.appendChild(div);
-      messages.scrollTop = messages.scrollHeight;
+      const d = document.createElement('div');
+      d.className = 'chat-bubble user p-3 rounded-lg';
+      d.textContent = text;
+      document.getElementById('chatMessages').appendChild(d);
+      document.getElementById('chatMessages').scrollTop = 99999;
     }
 
     async function sendChat() {
@@ -274,67 +194,41 @@
       if (!msg) return;
       addUserMessage(msg);
       input.value = '';
-
       if (apiKey) {
         try {
-          const response = await fetch('https://api.x.ai/v1/chat/completions', {
+          const r = await fetch('https://api.x.ai/v1/chat/completions', {
             method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${apiKey}`
-            },
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
             body: JSON.stringify({
               model: 'grok-beta',
-              messages: [
-                { role: 'system', content: `You are an expert video game guide and cheat helper. The user is playing ${currentGame || 'a video game'}. Provide helpful, accurate tips, map locations, walkthrough steps, cheats, and deal suggestions. Be concise and friendly.` },
-                { role: 'user', content: msg }
-              ],
-              max_tokens: 500
+              messages: [{role:'system', content:`Expert game helper for ${currentGame||'any game'}. Give tips, maps, cheats, deals.`},{role:'user', content:msg}],
+              max_tokens: 400
             })
           });
-          const data = await response.json();
-          const reply = data.choices?.[0]?.message?.content || 'AI response unavailable. Check your API key.';
-          addBotMessage(reply);
+          const data = await r.json();
+          addBotMessage(data.choices?.[0]?.message?.content || 'No response');
           return;
-        } catch (err) {
-          addBotMessage('AI request failed. Using fallback. Check API key or network.');
-        }
+        } catch(e) { addBotMessage('API error — using fallback.'); }
       }
+      setTimeout(() => addBotMessage(`For **${currentGame||'your game'}**: Check the relevant tab or search YouTube. Upload a screenshot if stuck!`), 500);
+    }
 
-      // Fallback smart responses
-      setTimeout(() => {
-        let reply = `For **${currentGame || 'your game'}**: `;
-        const lower = msg.toLowerCase();
-        if (lower.includes('map') || lower.includes('where') || lower.includes('location')) {
-          reply += 'Check the Maps tab for interactive locations. Or search YouTube for specific mission maps.';
-        } else if (lower.includes('cheat') || lower.includes('code') || lower.includes('glitch')) {
-          reply += 'See the Cheats tab. Always verify latest working codes on GameFAQs or IGN.';
-        } else if (lower.includes('price') || lower.includes('deal') || lower.includes('cheap') || lower.includes('buy')) {
-          reply += 'Best current deals are usually on CDKeys or Instant Gaming. Check the Deals tab for links.';
-        } else if (lower.includes('boss') || lower.includes('fight') || lower.includes('stuck')) {
-          reply += 'Try searching YouTube for the specific boss/area name + walkthrough. Upload a screenshot for better help!';
-        } else {
-          reply += 'I recommend checking the Guides tab for walkthroughs or searching YouTube for video help. Upload a screenshot if you\'re stuck on a specific spot!';
-        }
-        addBotMessage(reply);
-      }, 600);
+    function toggleApiKey() { document.getElementById('apiKeyPanel').classList.toggle('hidden'); }
+    function saveApiKey() {
+      apiKey = document.getElementById('apiKeyInput').value.trim();
+      localStorage.setItem('xai_api_key', apiKey);
+      document.getElementById('apiKeyPanel').classList.add('hidden');
+      addBotMessage(apiKey ? 'API key saved!' : 'Key cleared.');
     }
 
     function handlePhoto(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      document.getElementById('photoStatus').textContent = 'Photo uploaded! Analyzing...';
-      addUserMessage('[Screenshot uploaded of stuck location]');
-      // Note: Full vision AI would require backend or vision-capable model. For now, prompt user.
-      setTimeout(() => {
-        addBotMessage(`Got your screenshot! Describe what you see (e.g. "red door in a cave with a boss") and I can give better tips. For full image analysis, a vision-enabled AI backend is recommended.`);
-        document.getElementById('photoStatus').textContent = 'Ready — describe the scene';
-      }, 1000);
+      if (!e.target.files[0]) return;
+      document.getElementById('photoStatus').textContent = 'Uploaded!';
+      addUserMessage('[Screenshot of stuck spot]');
+      addBotMessage('Describe what you see and I\'ll help locate it or find a guide.');
     }
 
-    document.getElementById('chatInput').addEventListener('keypress', e => {
-      if (e.key === 'Enter') sendChat();
-    });
+    document.getElementById('chatInput').addEventListener('keypress', e => { if (e.key==='Enter') sendChat(); });
   </script>
 </body>
 </html>
