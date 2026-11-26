@@ -1,23 +1,23 @@
 {
-  "name": "Game Cheat - GoodVibez",
+  "name": "Game Cheat Helper",
   "short_name": "GameCheat",
-  "description": "Game guide chatbot with maps, cheats, deals, and AI vision helper",
+  "description": "Maps, guides, and Groq chat for any game.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#111827",
-  "theme_color": "#22c55e",
+  "background_color": "#0c1117",
+  "theme_color": "#0c1117",
   "icons": [
     {
       "src": "https://cdn-icons-png.flaticon.com/512/808/808439.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "https://cdn-icons-png.flaticon.com/512/808/808439.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }

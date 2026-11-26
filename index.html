@@ -3,262 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#22c55e">
+  <meta name="theme-color" content="#0c1117">
+  <meta name="description" content="Game Cheat Helper: Map Genie maps, guides, and Groq chat for any game.">
   <link rel="manifest" href="/manifest.json">
-  <title>Game Cheat - GoodVibez | Maps, Guides, Cheats & AI Vision</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    .chat-bubble { max-width: 85%; }
-    .user { background: #3b82f6; color: white; margin-left: auto; }
-    .bot { background: #1f2937; color: white; }
-    button, input, label { min-height: 44px; }
-  </style>
+  <link rel="stylesheet" href="/css/app.css">
+  <title>Game Cheat</title>
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
-  <header class="bg-black p-3 sm:p-4 shadow-lg sticky top-0 z-50">
-    <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-xl sm:text-2xl font-bold text-green-400 flex items-center gap-2">
-        <i class="fas fa-gamepad"></i> Game Cheat
-        <span class="hidden sm:inline text-sm text-gray-400 font-normal">by GoodVibez</span>
-      </h1>
-      <button id="installBtn" class="hidden bg-green-600 hover:bg-green-700 px-3 py-1 rounded text-sm">Install App</button>
+<body>
+  <header class="top">
+    <a class="brand" href="#/">Game Cheat<small>GoodVibez</small></a>
+    <form id="searchForm" class="search" role="search">
+      <input id="gameSearch" type="search" placeholder="Search any game" aria-label="Search any game" autocomplete="off">
+      <div id="suggest" class="suggest" hidden></div>
+    </form>
+    <div class="top-actions">
+      <button id="installBtn" class="btn btn-small" type="button" hidden>Install</button>
+      <button id="settingsBtn" class="btn btn-small btn-ghost" type="button">Settings</button>
     </div>
   </header>
 
-  <main class="container mx-auto p-3 sm:p-4 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 pb-20 lg:pb-4">
-    <div class="lg:col-span-2 space-y-4 sm:space-y-6">
-      <div class="bg-gray-800 p-4 sm:p-6 rounded-xl">
-        <h2 class="text-lg sm:text-xl font-semibold mb-3"><i class="fas fa-search"></i> What game are you playing?</h2>
-        <div class="flex flex-col sm:flex-row gap-2">
-          <input id="gameInput" type="text" placeholder="GTA 6, Elden Ring, Minecraft, Cyberpunk..." class="flex-1 p-3 rounded-lg bg-gray-700 border border-gray-600">
-          <button onclick="loadGame()" class="bg-green-500 hover:bg-green-600 px-6 py-3 rounded-lg font-bold">Load Guides</button>
-        </div>
-        <div id="quickGames" class="mt-3 flex flex-wrap gap-2">
-          <button onclick="setGame('GTA 6')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">GTA 6</button>
-          <button onclick="setGame('Elden Ring')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">Elden Ring</button>
-          <button onclick="setGame('Minecraft')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">Minecraft</button>
-          <button onclick="setGame('Cyberpunk 2077')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">Cyberpunk</button>
-          <button onclick="setGame('Red Dead Redemption 2')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">RDR2</button>
-          <button onclick="setGame('Fortnite')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">Fortnite</button>
-          <button onclick="setGame('Baldur\'s Gate 3')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">BG3</button>
-          <button onclick="setGame('The Legend of Zelda: Tears of the Kingdom')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">Zelda TOTK</button>
-          <button onclick="setGame('Valorant')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">Valorant</button>
-          <button onclick="setGame('Apex Legends')" class="bg-gray-700 hover:bg-gray-600 px-3 py-2 rounded text-sm">Apex</button>
-        </div>
-        <div id="recentGames" class="mt-2 text-sm text-gray-400"></div>
+  <div class="shell">
+    <nav id="sidenav" class="sidenav" aria-label="Sections"></nav>
+    <main id="view"><p class="fine" style="padding:16px">Loading games…</p></main>
+  </div>
+  <nav id="tabbar" class="tabbar" aria-label="Sections"></nav>
+  <p class="footer">Maps and checklists link to Map Genie. Chat sends the game’s pages to Groq. A key saved in Settings stays on this device.</p>
+
+  <dialog id="settings" aria-labelledby="settingsTitle">
+    <form id="settingsForm">
+      <div class="dialog-head">
+        <h2 id="settingsTitle">Chat settings</h2>
+        <button id="closeSettings" class="btn btn-small btn-ghost" type="button">Close</button>
       </div>
-
-      <div id="gameContent" class="hidden">
-        <div class="bg-gray-800 p-4 sm:p-6 rounded-xl">
-          <h2 id="gameTitle" class="text-xl sm:text-2xl font-bold text-green-400 mb-3"></h2>
-          <div class="flex overflow-x-auto gap-2 mb-4">
-            <button onclick="showTab('maps')" class="tab-btn bg-blue-600 px-4 py-2 rounded text-sm">Maps</button>
-            <button onclick="showTab('guides')" class="tab-btn bg-gray-700 px-4 py-2 rounded text-sm">Guides</button>
-            <button onclick="showTab('cheats')" class="tab-btn bg-gray-700 px-4 py-2 rounded text-sm">Cheats</button>
-            <button onclick="showTab('deals')" class="tab-btn bg-gray-700 px-4 py-2 rounded text-sm">Deals</button>
-          </div>
-          <div id="tabContent" class="prose prose-invert max-w-none text-sm sm:text-base"></div>
-        </div>
+      <p id="serverState" class="fine"></p>
+      <p id="keyState" class="fine"></p>
+      <label for="groqKey">Groq API key</label>
+      <input id="groqKey" name="groqKey" type="password" autocomplete="off" placeholder="gsk_…">
+      <p class="fine">Get a key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">console.groq.com/keys</a>. It is saved only on this device and sent only to Groq. This replaces the old xAI key.</p>
+      <label class="check"><input id="liveLookup" type="checkbox"> Look up live guides while chatting</label>
+      <label for="guideMode">Answer style</label>
+      <select id="guideMode">
+        <option value="guide">Guide (searches the web when needed)</option>
+        <option value="fast">Fast (uses loaded pages only)</option>
+      </select>
+      <div class="card-actions" style="margin-top:12px">
+        <button class="btn" type="submit">Save</button>
+        <button class="btn btn-ghost" type="button" data-action="clear-key">Remove key</button>
       </div>
-    </div>
+    </form>
+  </dialog>
 
-    <div id="chatPanel" class="bg-gray-800 p-4 sm:p-6 rounded-xl lg:sticky lg:top-20">
-      <h2 class="text-lg font-semibold mb-3 flex items-center">
-        <i class="fas fa-robot mr-2"></i> AI Game Helper
-        <button onclick="toggleApiKey()" class="ml-auto text-xs bg-gray-700 px-2 py-1 rounded">🔑 Vision AI</button>
-      </h2>
-      <div id="apiKeyPanel" class="hidden mb-3 p-2 bg-gray-900 rounded text-sm">
-        <input id="apiKeyInput" type="password" placeholder="xAI API key for full AI + vision" class="w-full p-2 rounded bg-gray-700 mb-1">
-        <button onclick="saveApiKey()" class="bg-green-600 px-3 py-1 rounded text-xs">Save Key</button>
-        <p class="text-xs text-gray-400 mt-1">Enables real Grok responses + screenshot vision analysis</p>
-      </div>
-      <div id="chatMessages" class="h-80 overflow-y-auto mb-3 space-y-2 p-2 bg-gray-900 rounded text-sm">
-        <div class="chat-bubble bot p-3 rounded-lg">Load a game or upload a screenshot. With an xAI key I can analyze images and give expert tips!</div>
-      </div>
-      <div class="flex gap-2 mb-2">
-        <input id="chatInput" type="text" placeholder="Ask or describe your stuck spot..." class="flex-1 p-3 rounded-lg bg-gray-700">
-        <button onclick="sendChat()" class="bg-blue-500 px-4 py-3 rounded-lg"><i class="fas fa-paper-plane"></i></button>
-      </div>
-      <label class="flex items-center gap-2 text-sm cursor-pointer">
-        <i class="fas fa-camera"></i> Upload screenshot (vision AI ready)
-        <input type="file" id="photoUpload" accept="image/*" class="hidden" onchange="handlePhoto(event)">
-      </label>
-      <span id="photoStatus" class="text-xs text-green-400 block mt-1"></span>
-    </div>
-  </main>
-
-  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-700 flex justify-around p-2 z-50">
-    <button onclick="document.getElementById('gameInput').focus()" class="flex flex-col items-center text-xs"><i class="fas fa-search"></i>Game</button>
-    <button onclick="document.getElementById('chatPanel').scrollIntoView({behavior:'smooth'})" class="flex flex-col items-center text-xs"><i class="fas fa-comments"></i>Chat</button>
-    <button onclick="showTab('deals')" class="flex flex-col items-center text-xs"><i class="fas fa-tags"></i>Deals</button>
-  </nav>
-
-  <footer class="text-center text-xs text-gray-500 p-4 mb-16 lg:mb-0">Game Cheat • GoodVibez.life • Best deals + AI vision helper</footer>
-
-  <script>
-    let currentGame = '';
-    let apiKey = localStorage.getItem('xai_api_key') || '';
-    let recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
-    let deferredPrompt;
-
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/service-worker.js');
-
-    window.addEventListener('beforeinstallprompt', e => {
-      e.preventDefault();
-      deferredPrompt = e;
-      document.getElementById('installBtn').classList.remove('hidden');
-    });
-    document.getElementById('installBtn')?.addEventListener('click', async () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        document.getElementById('installBtn').classList.add('hidden');
-      }
-    });
-
-    function renderRecent() {
-      const el = document.getElementById('recentGames');
-      el.innerHTML = recent.length ? 'Recent: ' + recent.slice(0,5).map(g => `<button onclick="setGame('${g}')" class="text-blue-400 underline mx-1">${g}</button>`).join('') : '';
-    }
-    renderRecent();
-
-    function setGame(g) { document.getElementById('gameInput').value = g; loadGame(); }
-
-    function loadGame() {
-      currentGame = document.getElementById('gameInput').value.trim();
-      if (!currentGame) return;
-      document.getElementById('gameTitle').textContent = currentGame;
-      document.getElementById('gameContent').classList.remove('hidden');
-      showTab('maps');
-      addBotMessage(`Loaded **${currentGame}**. Use tabs or ask me anything!`);
-      if (!recent.includes(currentGame)) {
-        recent.unshift(currentGame);
-        recent = recent.slice(0, 8);
-        localStorage.setItem('recentGames', JSON.stringify(recent));
-        renderRecent();
-      }
-    }
-
-    function showTab(tab) {
-      document.querySelectorAll('.tab-btn').forEach((b,i) => {
-        const names = ['maps','guides','cheats','deals'];
-        b.classList.toggle('bg-blue-600', names[i] === tab);
-        b.classList.toggle('bg-gray-700', names[i] !== tab);
-      });
-      document.getElementById('tabContent').innerHTML = getTabContent(currentGame, tab);
-    }
-
-    function getTabContent(game, tab) {
-      const g = game.toLowerCase();
-      if (tab === 'maps') {
-        if (g.includes('gta')) return '<p>GTA 6 Maps:</p><ul class="list-disc pl-5"><li><a href="https://www.gtabase.com/gta-6/maps" class="text-blue-400" target="_blank">GTABase Interactive</a></li><li><a href="https://mapgenie.io/grand-theft-auto-vi" class="text-blue-400" target="_blank">MapGenie</a></li><li><a href="https://www.ign.com/wikis/grand-theft-auto-vi" class="text-blue-400" target="_blank">IGN Wiki</a></li></ul>';
-        if (g.includes('elden')) return '<p>Elden Ring:</p><ul class="list-disc pl-5"><li><a href="https://eldenring.wiki.fextralife.com/Interactive+Map" class="text-blue-400" target="_blank">Fextralife Map</a></li><li><a href="https://mapgenie.io/elden-ring" class="text-blue-400" target="_blank">MapGenie</a></li></ul>';
-        if (g.includes('minecraft')) return '<p>Minecraft:</p><ul class="list-disc pl-5"><li><a href="https://www.minecraftmaps.com/" class="text-blue-400" target="_blank">Minecraft Maps</a></li><li><a href="https://minecraft.fandom.com/wiki/Tutorials" class="text-blue-400" target="_blank">Wiki Tutorials</a></li></ul>';
-        if (g.includes('cyberpunk')) return '<p>Cyberpunk 2077:</p><ul class="list-disc pl-5"><li><a href="https://cyberpunk.fandom.com/wiki/Cyberpunk_2077_Interactive_Map" class="text-blue-400" target="_blank">Fandom Map</a></li><li><a href="https://mapgenie.io/cyberpunk-2077" class="text-blue-400" target="_blank">MapGenie</a></li></ul>';
-        if (g.includes('red dead') || g.includes('rdr')) return '<p>RDR2:</p><ul class="list-disc pl-5"><li><a href="https://www.rdr2map.com/" class="text-blue-400" target="_blank">RDR2 Interactive Map</a></li><li><a href="https://mapgenie.io/red-dead-redemption-2" class="text-blue-400" target="_blank">MapGenie</a></li></ul>';
-        return `<p>Maps for ${game}:</p><ul class="list-disc pl-5"><li><a href="https://www.ign.com/search?q=${encodeURIComponent(game+' map')}" class="text-blue-400" target="_blank">IGN</a></li><li><a href="https://mapgenie.io" class="text-blue-400" target="_blank">MapGenie</a></li><li><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(game+' map')}" class="text-blue-400" target="_blank">YouTube</a></li></ul>`;
-      }
-      if (tab === 'guides') return `<p>Guides for ${game}:</p><ul class="list-disc pl-5"><li><a href="https://www.ign.com/wikis" class="text-blue-400" target="_blank">IGN Wiki</a></li><li><a href="https://gamefaqs.gamespot.com" class="text-blue-400" target="_blank">GameFAQs</a></li><li><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(game+' walkthrough')}" class="text-blue-400" target="_blank">Video Walkthroughs</a></li><li><a href="https://www.reddit.com/search/?q=${encodeURIComponent(game)}" class="text-blue-400" target="_blank">Reddit</a></li></ul>`;
-      if (tab === 'cheats') {
-        if (g.includes('gta')) return '<p>GTA 6 tips: money methods, vehicle spawns, and collectibles on the maps. Check latest YouTube for working glitches.</p>';
-        if (g.includes('elden')) return '<p>Elden Ring: early builds, rune farms, and boss strategies. Fextralife has excellent guides.</p>';
-        if (g.includes('minecraft')) return '<p>Minecraft: seed finders, redstone tutorials, and survival tips on the official wiki and YouTube.</p>';
-        return `<p>Cheats & tips for ${game}:</p><ul class="list-disc pl-5"><li><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(game+' cheats')}" class="text-blue-400" target="_blank">Latest Videos</a></li><li><a href="https://www.ign.com/search?q=${encodeURIComponent(game+' cheats')}" class="text-blue-400" target="_blank">IGN</a></li></ul>`;
-      }
-      if (tab === 'deals') return `<p>Best prices for ${game}:</p><div class="overflow-x-auto"><table class="w-full text-sm border-collapse"><tr class="bg-gray-700"><th class="p-2">Site</th><th class="p-2">Action</th></tr><tr><td class="p-2">CDKeys</td><td class="p-2"><a href="https://www.cdkeys.com/search?q=${encodeURIComponent(game)}" class="text-blue-400" target="_blank">Check price</a></td></tr><tr><td class="p-2">G2A</td><td class="p-2"><a href="https://www.g2a.com/search?query=${encodeURIComponent(game)}" class="text-blue-400" target="_blank">Check price</a></td></tr><tr><td class="p-2">Instant Gaming</td><td class="p-2"><a href="https://www.instant-gaming.com/en/search/?query=${encodeURIComponent(game)}" class="text-blue-400" target="_blank">Check price</a></td></tr><tr><td class="p-2">Steam</td><td class="p-2"><a href="https://store.steampowered.com/search/?term=${encodeURIComponent(game)}" class="text-blue-400" target="_blank">Official</a></td></tr></table></div><p class="text-xs text-gray-400 mt-2">CDKeys and Instant Gaming usually have the lowest legitimate key prices. Always verify seller ratings.</p>`;
-      return '';
-    }
-
-    function addBotMessage(text) {
-      const d = document.createElement('div');
-      d.className = 'chat-bubble bot p-3 rounded-lg';
-      d.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      const m = document.getElementById('chatMessages');
-      m.appendChild(d);
-      m.scrollTop = m.scrollHeight;
-    }
-    function addUserMessage(text) {
-      const d = document.createElement('div');
-      d.className = 'chat-bubble user p-3 rounded-lg';
-      d.textContent = text;
-      const m = document.getElementById('chatMessages');
-      m.appendChild(d);
-      m.scrollTop = m.scrollHeight;
-    }
-
-    async function sendChat() {
-      const input = document.getElementById('chatInput');
-      const msg = input.value.trim();
-      if (!msg) return;
-      addUserMessage(msg);
-      input.value = '';
-      if (apiKey) {
-        try {
-          const res = await fetch('https://api.x.ai/v1/chat/completions', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json','Authorization':`Bearer ${apiKey}`},
-            body: JSON.stringify({
-              model: 'grok-beta',
-              messages: [{role:'system',content:`You are an expert video game guide. User is playing ${currentGame||'a game'}. Give precise tips, locations, strategies.`},{role:'user',content:msg}],
-              max_tokens: 400
-            })
-          });
-          const data = await res.json();
-          addBotMessage(data.choices?.[0]?.message?.content || 'No reply');
-          return;
-        } catch(e) { addBotMessage('API error, using fallback.'); }
-      }
-      setTimeout(() => addBotMessage(`For **${currentGame||'your game'}**: Check the Maps/Guides tabs or search YouTube. Describe your stuck spot for better help!`), 400);
-    }
-
-    function toggleApiKey() { document.getElementById('apiKeyPanel').classList.toggle('hidden'); }
-    function saveApiKey() {
-      apiKey = document.getElementById('apiKeyInput').value.trim();
-      localStorage.setItem('xai_api_key', apiKey);
-      document.getElementById('apiKeyPanel').classList.add('hidden');
-      addBotMessage(apiKey ? 'Vision AI + full Grok enabled!' : 'Key removed.');
-    }
-
-    function handlePhoto(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      document.getElementById('photoStatus').textContent = 'Analyzing screenshot...';
-      const reader = new FileReader();
-      reader.onload = async function(ev) {
-        const base64 = ev.target.result.split(',')[1];
-        addUserMessage('[Screenshot uploaded]');
-        if (apiKey) {
-          try {
-            const res = await fetch('https://api.x.ai/v1/chat/completions', {
-              method: 'POST',
-              headers: {'Content-Type':'application/json','Authorization':`Bearer ${apiKey}`},
-              body: JSON.stringify({
-                model: 'grok-beta',
-                messages: [{
-                  role: 'user',
-                  content: [
-                    {type: 'text', text: `This is a screenshot from ${currentGame || 'a video game'}. Describe the location and give specific tips on what to do next or how to progress.`},
-                    {type: 'image_url', image_url: {url: `data:image/jpeg;base64,${base64}`}}
-                  ]
-                }],
-                max_tokens: 500
-              })
-            });
-            const data = await res.json();
-            addBotMessage(data.choices?.[0]?.message?.content || 'Could not analyze image.');
-          } catch(err) {
-            addBotMessage('Vision analysis failed. Describe what you see instead.');
-          }
-        } else {
-          addBotMessage('Screenshot received. Add an xAI API key for full vision analysis, or describe the scene (e.g. "cave with a red crystal") for tips.');
-        }
-        document.getElementById('photoStatus').textContent = 'Done';
-      };
-      reader.readAsDataURL(file);
-    }
-
-    document.getElementById('chatInput').addEventListener('keypress', e => { if (e.key === 'Enter') sendChat(); });
-  </script>
+  <input id="shotInput" type="file" accept="image/*" hidden>
+  <script type="module" src="/js/app.js"></script>
 </body>
 </html>

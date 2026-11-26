@@ -1,0 +1,8 @@
+{
+  "name": "game-cheat-helper",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  }
+}
