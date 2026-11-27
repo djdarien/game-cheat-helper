@@ -1,4 +1,4 @@
-const CACHE_NAME = 'game-cheat-v2';
+const CACHE_NAME = 'game-cheat-v3';
 const PRECACHE = [
   '/',
   '/index.html',

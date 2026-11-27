@@ -4,6 +4,12 @@ const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 export const GUIDE_MODEL = 'openai/gpt-oss-120b';
 export const FAST_MODEL = 'openai/gpt-oss-120b';
 export const VISION_MODEL = 'qwen/qwen3.8-27b';
+export const CHAT_MODELS = [
+  { id: 'openai/gpt-oss-120b', label: 'GPT-OSS 120B — smartest, live lookup' },
+  { id: 'openai/gpt-oss-20b', label: 'GPT-OSS 20B — fastest' },
+  { id: 'qwen/qwen3.8-27b', label: 'Qwen 3.8 27B — vision + chat' },
+  { id: 'llama-3.1-8b-instant', label: 'Llama 3.1 8B — instant answers' }
+];
 
 const SETTINGS_KEY = 'gch-settings-v1';
 
@@ -13,10 +19,11 @@ export function loadSettings() {
     return {
       groqKey: typeof saved.groqKey === 'string' ? saved.groqKey.trim() : '',
       liveLookup: saved.liveLookup !== false,
-      mode: saved.mode === 'fast' ? 'fast' : 'guide'
+      mode: saved.mode === 'fast' ? 'fast' : 'guide',
+      model: CHAT_MODELS.some((m) => m.id === saved.model) ? saved.model : GUIDE_MODEL
     };
   } catch {
-    return { groqKey: '', liveLookup: true, mode: 'guide' };
+    return { groqKey: '', liveLookup: true, mode: 'guide', model: GUIDE_MODEL };
   }
 }
 
@@ -25,7 +32,8 @@ export function saveSettings(next) {
   const settings = {
     groqKey: next.groqKey === undefined ? current.groqKey : String(next.groqKey || '').trim(),
     liveLookup: next.liveLookup === undefined ? current.liveLookup : Boolean(next.liveLookup),
-    mode: next.mode === 'fast' ? 'fast' : (next.mode === 'guide' ? 'guide' : current.mode)
+    mode: next.mode === 'fast' ? 'fast' : (next.mode === 'guide' ? 'guide' : current.mode),
+    model: next.model === undefined ? current.model : (CHAT_MODELS.some((m) => m.id === next.model) ? next.model : current.model)
   };
   localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   return settings;
@@ -138,7 +146,7 @@ async function postChat(body, { settings, server }) {
 
 export async function askGuide({ settings, server, game, history, text, imageDataUrl }) {
   const live = Boolean(settings.liveLookup) && !imageDataUrl && settings.mode !== 'fast';
-  const model = imageDataUrl ? VISION_MODEL : (settings.mode === 'fast' ? FAST_MODEL : GUIDE_MODEL);
+  const model = imageDataUrl ? VISION_MODEL : (settings.model || GUIDE_MODEL);
   const prior = history
     .filter((item) => typeof item.content === 'string')
     .slice(-12)
@@ -179,7 +187,6 @@ export async function askGuide({ settings, server, game, history, text, imageDat
       delete body.tools;
       delete body.tool_choice;
       delete body.reasoning_effort;
-      body.model = FAST_MODEL;
       const textAnswer = await postChat(body, { settings, server });
       return `${textAnswer}\n\nLive guide lookup was unavailable, so this answer used the loaded Map Genie and guide links only.`;
     }

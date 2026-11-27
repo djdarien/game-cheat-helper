@@ -41,6 +41,9 @@
       <input id="groqKey" name="groqKey" type="password" autocomplete="off" placeholder="gsk_…">
       <p class="fine">Get a key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">console.groq.com/keys</a>. It is saved only on this device and sent only to Groq. This replaces the old xAI key.</p>
       <label class="check"><input id="liveLookup" type="checkbox"> Look up live guides while chatting</label>
+      <label for="modelSelect">AI model</label>
+      <select id="modelSelect"></select>
+      <p class="fine">Screenshots always use the vision model (Qwen 3.8). Live guide lookup works best with GPT-OSS 120B.</p>
       <label for="guideMode">Answer style</label>
       <select id="guideMode">
         <option value="guide">Guide (searches the web when needed)</option>

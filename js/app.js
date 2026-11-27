@@ -1,4 +1,4 @@
-import { askGuide, clearHistory, clearKey, loadHistory, loadSettings, mapGenieHostOk, probeServer, saveHistory, saveSettings } from './chat.js';
+import { askGuide, CHAT_MODELS, clearHistory, clearKey, loadHistory, loadSettings, mapGenieHostOk, probeServer, saveHistory, saveSettings } from './chat.js';
 import { newCustomId, prepareCatalog, profileFromCatalog, profileFromCustom, rankGames, shouldAutoPick } from './resolve.js';
 import { esc, normalize, renderMarkdown, safeUrl } from './util.js';
 
@@ -568,6 +568,9 @@ function openSettings() {
   const dialog = document.getElementById('settings');
   document.getElementById('liveLookup').checked = state.settings.liveLookup;
   document.getElementById('guideMode').value = state.settings.mode;
+  const modelSelect = document.getElementById('modelSelect');
+  modelSelect.innerHTML = CHAT_MODELS.map((m) => `<option value="${m.id}">${m.label}</option>`).join('');
+  modelSelect.value = state.settings.model;
   document.getElementById('groqKey').value = '';
   const serverLine = document.getElementById('serverState');
   serverLine.textContent = state.server.configured
@@ -726,7 +729,8 @@ function bind() {
       const key = document.getElementById('groqKey').value.trim();
       const next = {
         liveLookup: document.getElementById('liveLookup').checked,
-        mode: document.getElementById('guideMode').value
+        mode: document.getElementById('guideMode').value,
+        model: document.getElementById('modelSelect').value
       };
       if (key) next.groqKey = key;
       state.settings = saveSettings(next);

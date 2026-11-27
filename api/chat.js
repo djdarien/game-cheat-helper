@@ -2,7 +2,8 @@ const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const ALLOWED_MODELS = new Set([
   'openai/gpt-oss-120b',
   'openai/gpt-oss-20b',
-  'qwen/qwen3.8-27b'
+  'qwen/qwen3.8-27b',
+  'llama-3.1-8b-instant'
 ]);
 
 function readBody(req) {
