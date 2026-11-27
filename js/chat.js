@@ -6,9 +6,8 @@ export const FAST_MODEL = 'openai/gpt-oss-120b';
 export const VISION_MODEL = 'qwen/qwen3.8-27b';
 export const CHAT_MODELS = [
   { id: 'openai/gpt-oss-120b', label: 'GPT-OSS 120B — smartest, live lookup' },
-  { id: 'openai/gpt-oss-20b', label: 'GPT-OSS 20B — fastest' },
-  { id: 'qwen/qwen3.8-27b', label: 'Qwen 3.8 27B — vision + chat' },
-  { id: 'llama-3.1-8b-instant', label: 'Llama 3.1 8B — instant answers' }
+  { id: 'openai/gpt-oss-20b', label: 'GPT-OSS 20B — fastest (needs Groq console enable)' },
+  { id: 'qwen/qwen3.8-27b', label: 'Qwen 3.8 27B — vision + chat (needs Groq console enable)' }
 ];
 
 const SETTINGS_KEY = 'gch-settings-v1';
